@@ -1,0 +1,32 @@
+name: Build DLL
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Visual Studio 2022
+      uses: microsoft/setup-msbuild@v1.0.2
+      with:
+        vs-version: '2022'
+
+    - name: Build solution
+      run: |
+        msbuild.exe PalWorld-NetCrack-NuLL-master/DX11-Base.sln /p:Configuration=Release
+
+    - name: Archive build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: dll-build
+        path: PalWorld-NetCrack-NuLL-master/Release/  # Adjust this path to match the location of your DLLs
