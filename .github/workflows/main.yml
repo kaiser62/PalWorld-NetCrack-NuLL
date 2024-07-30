@@ -20,11 +20,14 @@ jobs:
     - name: Set up Visual Studio 2022
       uses: microsoft/setup-msbuild@v1
       with:
-        vs-version: '2022'
+        vs-version: 'latest'
+        msbuild-architecture: 'x64'
+
+    - name: Install dependencies
+      run: choco install visualstudio2022buildtools --package-parameters "--add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --includeOptional"
 
     - name: Build solution
-      run: |
-        msbuild.exe PalWorld-NetCrack-NuLL-master/DX11-Base.sln /p:Configuration=Release
+      run: msbuild.exe PalWorld-NetCrack-NuLL-master/DX11-Base.sln /p:Configuration=Release
 
     - name: Archive build artifacts
       uses: actions/upload-artifact@v2
